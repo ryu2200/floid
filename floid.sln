@@ -5,6 +5,15 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "floid", "floid\floid.vcxproj", "{21C751CC-5B00-4D37-8173-7E30F445C08D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{465F680A-CB94-4383-BE83-C94E005510C2}"
+	ProjectSection(SolutionItems) = preProject
+		kashiwa_link.csv = kashiwa_link.csv
+		kashiwa_node.csv = kashiwa_node.csv
+		kashiwa_vehs.csv = kashiwa_vehs.csv
+		test_link.csv = test_link.csv
+		test_node.csv = test_node.csv
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
