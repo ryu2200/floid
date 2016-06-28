@@ -70,14 +70,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="dijkstra.cpp" />
     <ClCompile Include="Link_dij.cpp" />
     <ClCompile Include="Node_dij.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dijkstra.h" />
-    <ClInclude Include="func.h" />
+    <ClInclude Include="floid.h" />
+    <ClInclude Include="readData.h" />
     <ClInclude Include="Link.h" />
     <ClInclude Include="Link_dij.h" />
     <ClInclude Include="Network.h" />

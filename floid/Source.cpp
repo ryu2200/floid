@@ -1,25 +1,17 @@
 #include<iostream>
 #include<vector>
 #include<map>
-#include"func.h"
+#include<chrono>
+#include<fstream>
+#include"readData.h"
 #include"Network.h"
 #include"Node_dij.h"
 #include"Link_dij.h"
-#include<random>
-#include<sstream>
-#include<chrono>
-#include<fstream>
+#include"floid.h"
+
 using namespace std;
-char readline[MAX_LINE_NUM];
-//無限大コスト
-#define INF 100000
-//ノードデータの格納
-vector<line>node_data ;
-vector<line>link_data;
-Matrix d;//グラフの距離(自由流旅行時間を格納した二次元配列)
-//メインルーチン
+
 int main(int argc,char** argv){
-#if NDEBUG
 	//計測開始
 	const auto startTime = std::chrono::system_clock::now();
 	//パラメータ確認
@@ -41,36 +33,40 @@ int main(int argc,char** argv){
 		return EXIT_FAILURE;
 	}
 	//2.ノードのデータとリンクのデータを格納する
+	char readline[MAX_LINE_NUM];
+	//ノードデータの格納
 	int node_num = NULL;
+	vector<line>node_data;
 	readData(readline, node_data, fp_node, delimiter,node_num);
 	cerr << "ノードファイルの読み込み成功" << endl;
 	cout<<"ノード数=" << node_num << endl;
 	fclose(fp_node);
+	//リンクデータの格納
 	int link_num = NULL;
+	vector<line>link_data;
 	readData(readline, link_data, fp_link, delimiter,link_num);
 	cerr << "リンクファイルの読み込み成功" << endl;
 	cout<< "リンク数=" << link_num << endl;
 	fclose(fp_link);
+	//delete readline;
 
 	//3.ネットワークを生成する
 	Network<Node_dij*, Link_dij*> net;
-	//費用未確定、ノードコスト無限大のノードを生成する
 	for (int i = 0; i < node_num;i++){
-		// cout << stoi(node_data[i][0]) << endl;
 		net.addNode(new Node_dij(stoi(node_data[i][0])));
 	}
-	//リンクを格納する
+	node_data.clear();
 	for (int i = 0; i < link_num;i++){
 		net.addLink(new Link_dij(stoi(link_data[i][0]), 
 			stoi(link_data[i][1]),
 			stoi(link_data[i][2]), 
 			stoi(link_data[i][3])));
 	}
+	link_data.clear();
 	//フロイド法で全探索する
-	int stNode = net.nodes.begin()->first;
-	cout << "始点ノードは" << stNode << endl;
+	int stId = net.nodes.begin()->first;
 	int net_size = NULL;
-	washall_floyd(stNode,net,net_size);
+	washall_floyd(stId,net,net_size);
 	cout << "ネットワークサイズ="<<net_size << endl;
 
 #ifdef _DEBUG
@@ -90,10 +86,7 @@ int main(int argc,char** argv){
 	const auto endTime = std::chrono::system_clock::now();
 	const auto timeSpan = endTime - startTime;
 	std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
-	int hoge = NULL;
-	cout << "何かキーを入力してください" << endl;
-	cin >> hoge;
-#endif
+
 
 	/*
 	node_num = 4000;

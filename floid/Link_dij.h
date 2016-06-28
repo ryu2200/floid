@@ -11,4 +11,3 @@ public:
 	Link_dij(LinkID id_, NodeID st_, NodeID en_, int lc_);
 	~Link_dij();
 };
-///////////////

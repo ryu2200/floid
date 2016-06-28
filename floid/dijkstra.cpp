@@ -4,13 +4,9 @@
 #include"Link_dij.h"
 #include<iostream>
 #define UNLIMITED 1e+10
-
 using namespace std;
 
 void dijkstra(Network<Node_dij*, Link_dij*> net, NodeID startId, NodeID endId){
-	//前の龍君のコード移植。たぶん井料先生とかとすり合わせ済みだろう＋楽だから。
-	//StartNode,endIdはよくわからない。誤記防止が意図でも混乱しそう。統一したい。
-	//Networkに渡す型は（当然）ポインタにした。main()とかと整合性取るため。networkの定義でポインタにした方が楽な気もする。変わらないかも。
 	getNode_ptr(net, startId)->ncost = 0;
 	for (;;){
 		//1.a未確定ノードのうち最小費用を持つノードを検索する
@@ -23,9 +19,7 @@ void dijkstra(Network<Node_dij*, Link_dij*> net, NodeID startId, NodeID endId){
 		if (endId == minNode->id){
 			break;
 		}
-		//1.b隣接ノードまでの費用を計算する
-		//隣接ノードのイテレータを定義する
-		//キーが無ければoutlinksは存在しない
+		//1.b隣接ノードまでの費用を計算する.キーが無ければoutlinksは存在しない
 		if (net.outLinks.count(minNode->id) != NULL){
 			vector<Link_dij*> next = net.outLinks.find(minNode->id)->second;
 			//隣接ノードの中から一番費用の小さいノードを探す
@@ -57,7 +51,6 @@ void printParh(Network<Node_dij*, Link_dij*> net, NodeID startId, NodeID endId){
 	for (;;){
 		//現在ノードを設定する
 		Node_dij* node_c = root;
-		//Id, Cost を出力する
 		cout << "id :" << root->id << ", cost =" << node_c->ncost << endl;
 		if (node_c == origin){
 			break;
@@ -68,36 +61,30 @@ void printParh(Network<Node_dij*, Link_dij*> net, NodeID startId, NodeID endId){
 }
 
 
-
-
 //最小費用を持つノードを計算する
-int calcMinCost(Network<Node_dij*, Link_dij*> net,int& minID){
-	//ほぼ龍君の移植
-	//エラーなら0を返す。それ以外は最短のーどID返す
+int calcMinCost(Network<Node_dij*, Link_dij*> net){
+	//エラーなら-1を返す。それ以外は最短のーどID返す
+	int minID = -1;
 	double minCost = UNLIMITED;
-	
 	map<NodeID, Node_dij*>::iterator it = net.nodes.begin();
 	map<NodeID, Node_dij*>::iterator itE = net.nodes.end();
-
 	for (;it!=itE; it++){
 		if (it->second->isDet == false){
 			//小さい費用を持つノードが来たら更新する
 			if (minCost > it->second->ncost){
-				//cout << it->second->id << endl;
 				//最小費用を更新する
 				minCost = it->second->ncost;
 				//最小費用を持つノードのId
 				minID = it->second->id;
-				//cout << minID << endl;
 			}
 		}
 	}
 	return minID;
 
-	
+
+#ifdef DEBUG
 	//ネットワーク上のノードの中から最小費用を持つノードを探索する
 	//連番を前提としたネットワーク構造ならこれでいける
-#ifdef DEBUG
 	for (unsigned int i = 1; i <= net.nodes.size(); i++){
 		if ((net.nodes[i]->isDet == false)){
 			//小さい費用を持つノードが来たら更新する
@@ -120,7 +107,7 @@ Node_dij* getNode_ptr(Network<Node_dij*, Link_dij*> net, int id){
 	}
 	//キーが存在しなければNULLポインタを返す
 	else if (net.nodes.count(id) == 0){
-		return NULL;
+		return nullptr;
 	}
 	
 }
