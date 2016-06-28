@@ -114,5 +114,13 @@ int calcMinCost(Network<Node_dij*, Link_dij*> net,int& minID){
 }
 
 Node_dij* getNode_ptr(Network<Node_dij*, Link_dij*> net, int id){
-	return (net.nodes.find(id)->second);
+	//キーが存在すればポインタ返す
+	if (net.nodes.count(id)==1){
+		return (net.nodes.find(id)->second);
+	}
+	//キーが存在しなければNULLポインタを返す
+	else if (net.nodes.count(id) == 0){
+		return NULL;
+	}
+	
 }

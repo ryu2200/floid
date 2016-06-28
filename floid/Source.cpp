@@ -6,17 +6,22 @@
 #include"Node_dij.h"
 #include"Link_dij.h"
 #include<random>
+#include<sstream>
+#include<chrono>
+#include<fstream>
 using namespace std;
 char readline[MAX_LINE_NUM];
 //無限大コスト
 #define INF 100000
-#define DEBUG 0
 //ノードデータの格納
 vector<line>node_data ;
 vector<line>link_data;
 Matrix d;//グラフの距離(自由流旅行時間を格納した二次元配列)
 //メインルーチン
 int main(int argc,char** argv){
+#if NDEBUG
+	//計測開始
+	const auto startTime = std::chrono::system_clock::now();
 	//パラメータ確認
 	if (argc != 3){
 		cerr << "Invalid parameter num" << endl;
@@ -62,15 +67,35 @@ int main(int argc,char** argv){
 			stoi(link_data[i][3])));
 	}
 	//フロイド法で全探索する
-	int stNode = 110;
+	int stNode = net.nodes.begin()->first;
+	cout << "始点ノードは" << stNode << endl;
 	int net_size = NULL;
-	cout << net.nodes.size();
 	washall_floyd(stNode,net,net_size);
 	cout << "ネットワークサイズ="<<net_size << endl;
-	
-	
 
-#if DEBUG
+#ifdef _DEBUG
+	//未確定ノードを確認(デバック用)
+	ofstream unfixed_node("./unfixed_node.csv");
+	map<NodeID, Node_dij*>::iterator it = net.nodes.begin();
+	map<NodeID, Node_dij*>::iterator itE = net.nodes.end();
+
+	for (; it != itE; it++){
+		//確定フラグが未確定のノードをファイルに出力
+		if (it->second->isDet == false){
+			unfixed_node << it->second->id << ","<<endl;
+		}
+	}
+#endif 
+	//終了時刻
+	const auto endTime = std::chrono::system_clock::now();
+	const auto timeSpan = endTime - startTime;
+	std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
+	int hoge = NULL;
+	cout << "何かキーを入力してください" << endl;
+	cin >> hoge;
+#endif
+
+	/*
 	node_num = 4000;
 	
 	d = Matrix(node_num, vector<int>(node_num, INF));
@@ -98,5 +123,5 @@ int main(int argc,char** argv){
 				
 		}
 	}
-#endif
+*/
 } 

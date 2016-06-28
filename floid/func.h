@@ -5,6 +5,7 @@
 #include <algorithm>
 #include"network.h"
 #include"dijkstra.h"
+#include<chrono>
 using namespace std;
 typedef vector<string> line;
 typedef vector<vector<int> > Matrix;
@@ -59,13 +60,12 @@ void washall_floyd(int stId,Network<Node_dij*, Link_dij*> net,int& net_size){
 	for (;;){
 		int minID = -1;
 		Node_dij* minNode = getNode_ptr(net, calcMinCost(net,minID));
-		minNode->isDet = true;
-		//cout << minNode->id;
-		
 		//最小費用を持つノードが見つからなければ全てのノードを探索しているので終了
-		if (minID == -1){
+		if (minNode ==NULL){
 			break;
 		}
+		//費用を確定
+		minNode->isDet = true;
 		net_size++;
 		//隣接ノードまでの費用を計算する.キーが無ければそのノードからリンクは伸びていない
 		if (net.outLinks.count(minNode->id) != NULL){
@@ -78,7 +78,7 @@ void washall_floyd(int stId,Network<Node_dij*, Link_dij*> net,int& net_size){
 					//隣接ノード費用が仮費用より大きければ費用を更新し先行ポインタを記録する
 					if (NextNodePtr->ncost > newCost){
 						NextNodePtr->ncost = newCost;
-						//NextNodePtr->preNode = minNode;
+						NextNodePtr->preNode = minNode;
 					}
 				}
 			}
