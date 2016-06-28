@@ -1,6 +1,6 @@
 #pragma once
-#include "Link_dij.h"
-//リンクコストを取得する
+#include "Link_floyd.h"
+
 int Link_dij::getLinkCost(){
 	return this->lcost;
 }

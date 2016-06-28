@@ -1,16 +1,16 @@
 #pragma once
 #include "Node.h"
-class Node_dij :public Node{
+class Node_floyd :public Node{
 public:
 	//ノードコスト
 	double ncost;
 	//確定フラグ
 	bool isDet;
 	//先行ノードのポインタ
-	Node_dij* preNode;
+	Node_floyd* preNode;
 	//デフォルトコンストラクタ
-	Node_dij();
+	Node_floyd();
 	//ノード情報を初期化
-	Node_dij(NodeID id_);
-	~Node_dij();
+	Node_floyd(NodeID id_);
+	~Node_floyd();
 };

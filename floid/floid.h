@@ -1,18 +1,16 @@
 #pragma once 
-#include<vector>
-#include"Node_dij.h"
-#include"network.h"
-#include"Link_dij.h"
+#include"myHeader.h"
+#include"types.h"
 #define UNLIMITED 1e+10
 
 #ifndef SEQUENCE
 //最小費用を持つノードを計算する
-int calcMinCost(Network<Node_dij*, Link_dij*> net){
+inline int calcMinCost(Network<Node_floyd*, Link_dij*> net){
 	//エラーなら-1を返す。それ以外は最短のーどID返す
 	int minID = -1;
 	double minCost = UNLIMITED;
-	map<NodeID, Node_dij*>::iterator it = net.nodes.begin();
-	map<NodeID, Node_dij*>::iterator itE = net.nodes.end();
+	map<NodeID, Node_floyd*>::iterator it = net.nodes.begin();
+	map<NodeID, Node_floyd*>::iterator itE = net.nodes.end();
 	for (; it != itE; it++){
 		if (it->second->isDet == false){
 			//小さい費用を持つノードが来たら更新する
@@ -42,7 +40,7 @@ int calcMinCost(Network<Node_dij*, Link_dij*> net){
 #endif
 
 }
-Node_dij* getNode_ptr(Network<Node_dij*, Link_dij*> net, int id){
+inline Node_floyd* getNode_ptr(Network<Node_floyd*, Link_dij*> net, int id){
 	//キーが存在すればポインタ返す
 	if (net.nodes.count(id) == 1){
 		return (net.nodes.find(id)->second);
@@ -54,10 +52,10 @@ Node_dij* getNode_ptr(Network<Node_dij*, Link_dij*> net, int id){
 
 }
 //フロイド法でネットワークを全探索する
-void washall_floyd(int stId, Network<Node_dij*, Link_dij*> net, int& net_size){
+inline void washall_floyd(int stId, Network<Node_floyd*, Link_dij*> net, int& net_size){
 	getNode_ptr(net, stId)->ncost = 0;
 	for (;;){
-		Node_dij* minNode = getNode_ptr(net, calcMinCost(net));
+		Node_floyd* minNode = getNode_ptr(net, calcMinCost(net));
 		//最小費用を持つノードが見つからなければ全てのノードを探索しているので終了
 		if (minNode == NULL){
 			break;

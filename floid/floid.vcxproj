@@ -70,18 +70,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Link_dij.cpp" />
-    <ClCompile Include="Node_dij.cpp" />
+    <ClCompile Include="Link_floyd.cpp" />
+    <ClCompile Include="Node_floyd.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="floid.h" />
+    <ClInclude Include="myHeader.h" />
     <ClInclude Include="readData.h" />
     <ClInclude Include="Link.h" />
-    <ClInclude Include="Link_dij.h" />
+    <ClInclude Include="Link_floyd.h" />
     <ClInclude Include="Network.h" />
     <ClInclude Include="Node.h" />
-    <ClInclude Include="Node_dij.h" />
+    <ClInclude Include="Node_floyd.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

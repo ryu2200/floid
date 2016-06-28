@@ -1,9 +1,8 @@
 #pragma once 
-#include<iostream>
-#include<vector>
-#include<string>
+#include"myHeader.h"
+#include"types.h"
 using namespace std;
-typedef vector<string> line;
+
 //読み込む行データの最大値.こいつに余裕もたせないとやばい
 #define MAX_LINE_NUM 10000
 //空行には改行コードだけが挿入されている

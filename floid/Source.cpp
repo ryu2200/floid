@@ -1,14 +1,4 @@
-#include<iostream>
-#include<vector>
-#include<map>
-#include<chrono>
-#include<fstream>
-#include"readData.h"
-#include"Network.h"
-#include"Node_dij.h"
-#include"Link_dij.h"
-#include"floid.h"
-
+#include"myHeader.h"
 using namespace std;
 
 int main(int argc,char** argv){
@@ -51,9 +41,9 @@ int main(int argc,char** argv){
 	//delete readline;
 
 	//3.ネットワークを生成する
-	Network<Node_dij*, Link_dij*> net;
+	Network<Node_floyd*, Link_dij*> net;
 	for (int i = 0; i < node_num;i++){
-		net.addNode(new Node_dij(stoi(node_data[i][0])));
+		net.addNode(new Node_floyd(stoi(node_data[i][0])));
 	}
 	node_data.clear();
 	for (int i = 0; i < link_num;i++){
@@ -87,34 +77,4 @@ int main(int argc,char** argv){
 	const auto timeSpan = endTime - startTime;
 	std::cout << "処理時間:" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
 
-
-	/*
-	node_num = 4000;
-	
-	d = Matrix(node_num, vector<int>(node_num, INF));
-	for (int i = 0; i < node_num; i++) d[i][i] = 0;
-	//リンクコストを設定する
-	//この時ヘッダが挿入されているとエラー
-	for (int i = 0; i < link_num; i++) {
-		int  stNode = NULL;
-		int  enNode = NULL;;
-		int freespd = NULL;
-		stNode = stoi(link_data[i][1]);
-		enNode = stoi(link_data[i][2]);
-		freespd = stoi(link_data[i][3]);
-		d[stNode][enNode] = freespd;
-	}
-	cerr << "リンクコストの設定終了"<<endl;
-	warshall_floyd(node_num,d);
-	cerr << "最短経路の計算終了" << endl;
-	//計算結果を出力
-	for (int i = 0; i < node_num; i++) {
-		for (int j = 0; j < node_num; j++) {
-			if (i != j && d[i][j] != INF){
-				cout << i << "から" << j << "へのコスト: " << d[i][j] << endl;
-			}
-				
-		}
-	}
-*/
 } 
