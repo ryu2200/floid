@@ -1,4 +1,5 @@
 #include"myHeader.h"
+#include"types.h"
 using namespace std;
 
 int main(int argc,char** argv){
@@ -41,25 +42,83 @@ int main(int argc,char** argv){
 	//delete readline;
 
 	//3.ネットワークを生成する
-	Network<Node_floyd*, Link_dij*> net;
+	Network<Node_floyd*, Link_floyd*> net;
 	for (int i = 0; i < node_num;i++){
-		net.addNode(new Node_floyd(stoi(node_data[i][0])));
+		net.addNode(new Node_floyd(stoi(node_data[i][0]), 
+			stoi(node_data[i][1]),
+			stoi(node_data[i][2])
+			)
+			);
 	}
 	node_data.clear();
 	for (int i = 0; i < link_num;i++){
-		net.addLink(new Link_dij(stoi(link_data[i][0]), 
+		net.addLink(new Link_floyd(stoi(link_data[i][0]), 
 			stoi(link_data[i][1]),
 			stoi(link_data[i][2]), 
-			stoi(link_data[i][3])));
+			stoi(link_data[i][3]),
+			stoi(link_data[i][4]),
+			stoi(link_data[i][5]),
+			stoi(link_data[i][6]),
+			stoi(link_data[i][7]),
+			stoi(link_data[i][8]),
+			stoi(link_data[i][9])
+			));
 	}
 	link_data.clear();
+	cout << "ネットワークの生成終了" << endl;
+	
+	//探索は適当にnodesの先頭から開始
+	int netId = NULL;
+	NodeID stId = net.nodes.begin()->first;
+	stId = 110;
+	cout << "stId=" << stId << endl;
 	//フロイド法で全探索する
-	int stId = net.nodes.begin()->first;
 	int net_size = NULL;
-	washall_floyd(stId,net,net_size);
-	cout << "ネットワークサイズ="<<net_size << endl;
+	washall_floyd(stId, net, net_size);
+	cout << "NetworkId ="<<netId<<","<<"NetworkSize =" << net_size << endl;
+#ifdef _DUBUG
+	//4.ネットワークを分割する
+	//分割後のネットワークを格納する配列
+	vector<Network<Node_floyd*, Link_floyd*>> separated_net(1000);
+	vector<Network<Node_floyd*, Link_floyd*>>::iterator separated_net_it = separated_net.begin();
+	int netId = 0;
 
-#ifdef _DEBUG
+	for (;;){
+		//nodesが空なら探索終了
+		if (net.nodes.size()==NULL){
+			break;
+		}
+		//探索は適当にnodesの先頭から開始
+		NodeID stId = net.nodes.begin()->first;
+		cout << "stId=" << stId << endl;
+		//フロイド法で全探索する
+		int net_size = NULL;
+		washall_floyd(stId, net, net_size);//
+		cout << "NetworkId ="<<netId<<","<<"NetworkSize =" << net_size << endl;
+		cout << endl;
+		netId++;
+		//確定ノードと確定ノードから伸びるリンク(outlinksとinlinks)を格納
+		map<NodeID,Node_floyd*>::iterator nodes_it = net.nodes.begin();
+		map<NodeID, Node_floyd*>::iterator nodes_itE = net.nodes.end();
+		for (; nodes_it != nodes_itE; nodes_it++){
+			Node_floyd* nf = nodes_it->second;
+			if (nf->isDet==true){
+				//ノードを追加
+				separated_net_it->addNode(new Node_floyd(nf->id,nf->x,nf->y));
+				//リンクを追加
+
+				//確定したノードをnodesから削除
+				net.nodes.erase(nf->id);
+
+			}
+			
+		}
+		separated_net_it++;
+
+
+	}
+#endif
+#ifdef _TEST
 	//未確定ノードを確認(デバック用)
 	ofstream unfixed_node("./unfixed_node.csv");
 	map<NodeID, Node_dij*>::iterator it = net.nodes.begin();
