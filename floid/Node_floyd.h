@@ -10,6 +10,8 @@ public:
 	bool isInf;
 	//先行ノードのポインタ
 	Node_floyd* preNode;
+
+	bool isTraced;
 	//デフォルトコンストラクタ
 	Node_floyd();
 	//ノード情報を初期化

@@ -93,24 +93,34 @@ inline void floyd(int stId, Network<Node_floyd*, Link_floyd*> net, int& net_size
 		if (Node_c == NULL){
 			break;
 		}
-		//sæ‚ª‚ ‚ê‚ÎˆÚ“®
+		//sæ‚ª‚ ‚ê‚Î
 		if (net.outLinks.count(Node_c->id) != NULL){
 			vector < Link_floyd* > ::iterator  next_it = net.outLinks.find(Node_c->id)->second.begin();
 			vector < Link_floyd* > ::iterator  next_itE = net.outLinks.find(Node_c->id)->second.end();
-			Node_floyd* NextNodePtr = NULL;
+			//sæ‚Ìƒm[ƒh‚ðŽæ“¾
+			Node_floyd* NextNodePtr = getNode_ptr(net, (*next_it)->en);
+			//’Tõ‘O‚Ì—×Úƒm[ƒh‚ð’T‚·
 			for (; next_it != next_itE;next_it++){
-				//sæ‚Ìƒm[ƒh‚ðŽæ“¾
-				NextNodePtr = getNode_ptr(net, (*next_it)->en);
-				//‚·‚Å‚És‚Á‚½‚±‚Æ‚ª‚È‚¢ƒm[ƒh‚ÉˆÚ“®
+				//–¢’Tõ‚Ìƒm[ƒh‚ªŒ©‚Â‚©‚ê‚Î
 				if (NextNodePtr->isTraced == false){
-					NextNodePtr->isTraced = true;
-					NextNodePtr->preNode = Node_c;
-					Node_c = NextNodePtr;
+					NextNodePtr = getNode_ptr(net, (*next_it)->en);
 				}
-			}	
+			}
+			//–¢’Tõ‚Ìƒm[ƒh‚ª‚ ‚ê‚ÎˆÚ“®
+			if (NextNodePtr->isTraced == false){
+				//—×Úƒm[ƒh‚ÉˆÚ“®
+				NextNodePtr->isTraced = true;
+				NextNodePtr->preNode = Node_c;
+				Node_c = NextNodePtr;
+			}
+			//–¢’Tõ‚Ìƒm[ƒh‚ªŒ©‚Â‚©‚ç‚È‚¯‚ê‚Îƒ‹[ƒv‚ð‚Ê‚ß‚é
+			if (NextNodePtr->isTraced == true){
+				break;
+			}
+			
 		}
-		//sæ‚ª‚È‚¯‚ê‚Îˆê‚Â–ß‚é
-		else if (net.outLinks.count(Node_c->id) != NULL){
+		//sæ‚ª‚È‚¢‚à‚µ‚­‚Í—×Úƒm[ƒh‚ª’TõÏ‚Ý‚È‚çˆê‚Â–ß‚é
+		if (net.outLinks.count(Node_c->id) != NULL&&){
 			//Node_c = NextNodePtr->preNode
 		}
 	}
